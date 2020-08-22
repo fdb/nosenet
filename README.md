@@ -6,7 +6,7 @@ This project uses [PoseNet](https://medium.com/tensorflow/real-time-human-pose-e
 
 🌎 [Live Example](https://nosenet.netlify.app/)
 
-📺 [YouTube Video](https://youtu.be/_jpoY6gsJlw)
+📺 [YouTube Video](https://youtu.be/NLKzzmXN498)
 
 # Reference
 
