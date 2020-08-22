@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoseNet</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        video {
+            position: absolute;
+            transform: scale(-1, 1);
+        }
+
+        main {
+            position: absolute;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+    <p id="status">Allow camera access to draw with your nose! No data will be sent to the internet.</p>
+    <script src="https://unpkg.com/p5"></script>
+    <script src="https://unpkg.com/ml5"></script>
+    <script>
+        let video;
+        let poseNet;
+        let poses = [];
+        let noseX, noseY;
+
+        function setup() {
+            createCanvas(800, 600);
+            video = createCapture(VIDEO);
+            video.size(width, height);
+            // video.hide();
+
+            noseX = width / 2;
+            noseY = height / 2;
+
+            poseNet = ml5.poseNet(video, modelReady);
+            poseNet.on('pose', results => {
+                poses = results;
+            });
+        }
+
+        function draw() {
+            translate(width, 0);
+            scale(-1, 1);
+            // image(video, 0, 0, width, height);
+            // console.log(poses);
+            if (poses.length > 0) {
+                drawNose(poses[0].pose);
+            }
+        }
+
+        function drawNose(pose) {
+            fill(255, 0, 0);
+
+            noseX += (pose.nose.x - noseX) * 0.1;
+            noseY += (pose.nose.y - noseY) * 0.1;
+
+            ellipse(noseX, noseY, 8);
+        }
+
+        function modelReady() {
+            select('#status').html('');
+
+        }
+
+    </script>
+
+</body>
+
+</html>
